@@ -1,0 +1,189 @@
+{
+  "name": "openjudge-vscode",
+  "displayName": "OpenJudge",
+  "description": "A modern, feature-complete VSCode extension for OpenJudge online judge system",
+  "version": "1.0.0",
+  "publisher": "openjudge",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "openjudge",
+          "title": "OpenJudge",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "openjudge": [
+        {
+          "id": "openjudge.problemExplorer",
+          "name": "Problem Explorer",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "openjudge.login",
+        "title": "Login to OpenJudge",
+        "category": "OpenJudge"
+      },
+      {
+        "command": "openjudge.configure",
+        "title": "Configure Settings",
+        "category": "OpenJudge"
+      },
+      {
+        "command": "openjudge.logout",
+        "title": "Logout from OpenJudge",
+        "category": "OpenJudge"
+      },
+      {
+        "command": "openjudge.refresh",
+        "title": "Refresh Problems",
+        "category": "OpenJudge",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "openjudge.viewProblem",
+        "title": "View Problem",
+        "category": "OpenJudge"
+      },
+      {
+        "command": "openjudge.submitSolution",
+        "title": "Submit Solution",
+        "category": "OpenJudge",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "openjudge.pickProblem",
+        "title": "Pick Problem for Current File",
+        "category": "OpenJudge",
+        "icon": "$(search)"
+      },
+      {
+        "command": "openjudge.viewSubmissions",
+        "title": "View My Submissions",
+        "category": "OpenJudge"
+      },
+      {
+        "command": "openjudge.viewSubmissionStatus",
+        "title": "View Submission Status",
+        "category": "OpenJudge"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "openjudge.refresh",
+          "when": "view == openjudge.problemExplorer",
+          "group": "navigation"
+        },
+        {
+          "command": "openjudge.login",
+          "when": "view == openjudge.problemExplorer"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "openjudge.viewProblem",
+          "when": "view == openjudge.problemExplorer && viewItem == problem"
+        },
+        {
+          "command": "openjudge.submitSolution",
+          "when": "view == openjudge.problemExplorer && viewItem == problem",
+          "group": "inline"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "openjudge.submitSolution",
+          "when": "resourceScheme == file",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "OpenJudge",
+      "properties": {
+        "openjudge.groups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "python"
+          ],
+          "description": "List of OpenJudge group subdomains to display (e.g., python, 21jgc13, noi, cs101)"
+        },
+        "openjudge.preferredLanguage": {
+          "type": "string",
+          "enum": [
+            "Python3",
+            "C++",
+            "C",
+            "Java",
+            "C++11",
+            "Pascal",
+            "Go"
+          ],
+          "default": "Python3",
+          "description": "Preferred programming language for submissions"
+        },
+        "openjudge.interfaceLanguage": {
+          "type": "string",
+          "enum": [
+            "zh_CN",
+            "en_US"
+          ],
+          "default": "zh_CN",
+          "description": "Interface language for OpenJudge website"
+        },
+        "openjudge.defaultGroup": {
+          "type": "string",
+          "default": "python",
+          "description": "Default OpenJudge group subdomain (deprecated, use openjudge.groups instead)"
+        },
+        "openjudge.autoRefresh": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically refresh problem list on extension activation"
+        },
+        "openjudge.submissionPollingInterval": {
+          "type": "number",
+          "default": 2000,
+          "description": "Interval (in milliseconds) for polling submission status"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "bun run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "bun run compile",
+    "lint": "eslint src --ext ts",
+    "test": "bun ./out/test/runTest.js",
+    "dev": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@types/vscode": "^1.80.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "undici": "^7.16.0"
+  }
+}
